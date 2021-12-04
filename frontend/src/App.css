@@ -13,3 +13,25 @@
   flex-flow: column;
 }
 
+.admin-wrapper{
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  border-top: 1px solid grey;
+}
+
+.survey-wrapper{
+  display: flex;
+  flex-wrap: wrap;
+  width: 80%;
+  margin-top: 1em;
+}
+
+.admin-content{
+  padding: 0 2em;
+}
+
+.pointer{
+  cursor: pointer;
+}

@@ -6,6 +6,7 @@ const mongoose = require('mongoose')
 const app = express()
 const PORT = process.env.PORT || 2618
 const userRoutes = require('./routes/userRoutes')
+const surveyRoutes = require('./routes/surveyRoutes')
 const db_url = process.env.DB_URL
 
 app.use(morgan('dev'))
@@ -13,6 +14,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
 app.use('/api', userRoutes)
+app.use('/api/survey', surveyRoutes)
 
 async function dbConnect() {
     await mongoose.connect(db_url)
