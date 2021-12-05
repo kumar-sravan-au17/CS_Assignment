@@ -20,6 +20,15 @@ function AdminPage() {
         setSurveys(data)
     }
 
+    const handleLogout = () => {
+        document.cookie = "auth-token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        contextValue.setLoggedIn(false)
+        contextValue.setUserId('')
+        contextValue.setUserName('')
+        contextValue.setRole('')
+        navigate('/')
+    }
+
     useEffect(() => {
         pullSurveys()
         let role = contextValue.role || localStorage.getItem('role')
@@ -34,7 +43,10 @@ function AdminPage() {
         <div className="admin-wrapper">
             <div style={{display: 'flex', justifyContent: 'space-between', marginTop:'1em', width:"60%"}}>
                 <h1 style={{display: 'inline'}}>Admin Page</h1>
-                <button onClick={() => setClickedAdd(true)} className="btn btn-primary align-right mb-3">Add Survey</button>
+                <div>
+                    <button onClick={() => setClickedAdd(true)} className="btn btn-primary align-right me-2 mb-3">Add Survey</button>
+                    <button onClick={handleLogout} className="btn btn-primary align-right mb-3">Logout</button>
+                </div>
             </div>
             <div className="admin-content">
                 {clickedAdd && <AddSurvey closeFn={setClickedAdd} pullSurveys={pullSurveys} />}

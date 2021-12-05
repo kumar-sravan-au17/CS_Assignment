@@ -14,6 +14,7 @@ function ViewResponses(props) {
     useEffect(() => {
         pullResponses()
     }, [])
+
     return(
         <div className="response-wrapper">
             <h1 className="border-bottom">{props.title}</h1>

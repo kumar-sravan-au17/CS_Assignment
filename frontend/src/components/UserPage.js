@@ -24,6 +24,15 @@ function UserPage() {
         setCurrentSurvey(data)
     }
 
+    const handleLogout = () => {
+        document.cookie = "auth-token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        contextValue.setLoggedIn(false)
+        contextValue.setUserId('')
+        contextValue.setUserName('')
+        contextValue.setRole('')
+        navigate('/')
+    }
+
     useEffect(() => {
         pullSurveys()
         if (contextValue.role !== "user" || contextValue.loggedIn !== true) {
@@ -36,6 +45,7 @@ function UserPage() {
         <div className="admin-wrapper">
             <div style={{display: 'flex', justifyContent: 'space-between', marginTop:'1em', width:"60%"}}>
                 <h1 style={{display: 'inline'}}>User Page</h1>
+                <button onClick={handleLogout} className="btn btn-primary align-right mb-3">Logout</button>
             </div>
             <div className="survey-wrapper">
                 {surveys.map((s) => <div onClick={() => handleSurveyClick(s._id)} key={uuidv4()} className="card pointer border-dark shadow-sm p-3 me-3 mb-3">
