@@ -7,9 +7,11 @@ const app = express()
 const PORT = process.env.PORT || 2618
 const userRoutes = require('./routes/userRoutes')
 const surveyRoutes = require('./routes/surveyRoutes')
+const cookieParser = require('cookie-parser')
 const db_url = process.env.DB_URL
 
 app.use(morgan('dev'))
+app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 

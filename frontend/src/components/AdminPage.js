@@ -1,8 +1,15 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router';
 import AddSurvey from './AddSurvey'
+import ViewSurvey from './ViewSurvey';
 import { v4 as uuidv4 } from 'uuid';
+import { UserContext } from '../App';
+
 
 function AdminPage() {
+
+    const navigate = useNavigate()
+    const contextValue = useContext(UserContext)
 
     const [clickedAdd, setClickedAdd] = useState(false)
     const [surveys, setSurveys] = useState([])
@@ -15,7 +22,13 @@ function AdminPage() {
 
     useEffect(() => {
         pullSurveys()
-    }, [])
+        let role = contextValue.role || localStorage.getItem('role')
+        let loggedIn = contextValue.loggedIn || localStorage.getItem("loggedIn")
+        if (role !== "admin" || loggedIn !== true) {
+            alert("Access Denied, Please Login!")
+            navigate('/login')
+        }
+    }, [contextValue, navigate])
 
     return(
         <div className="admin-wrapper">
@@ -27,13 +40,7 @@ function AdminPage() {
                 {clickedAdd && <AddSurvey closeFn={setClickedAdd} pullSurveys={pullSurveys} />}
             </div>
             <div className="survey-wrapper">
-                {surveys.map((s) => <div key={uuidv4()} className="card border-dark shadow-sm p-3 me-3 mb-3">
-                    <h5>{s.title}</h5>
-                    <ul>
-                        {s.questions.map((q, index) => <li key={index}>{q.question}</li>)}
-                    </ul>
-                    {/* <p>Survey Ends in : {}</p> */}
-                    </div>)}
+                {surveys.map((s) => <ViewSurvey data={s} key={uuidv4()}/>)}
             </div>
         </div>
     )

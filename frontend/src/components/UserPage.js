@@ -1,8 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid';
+import { UserContext } from '../App';
 import FillSurvey from './FillSurvey';
+import { useNavigate } from 'react-router-dom'
 
 function UserPage() {
+
+    const navigate = useNavigate()
+    const contextValue = useContext(UserContext)
 
     const [surveys, setSurveys] = useState([])
     const [currentSurvey, setCurrentSurvey] = useState('')
@@ -21,7 +26,11 @@ function UserPage() {
 
     useEffect(() => {
         pullSurveys()
-    }, [])
+        if (contextValue.role !== "user" || contextValue.loggedIn !== true) {
+            alert("Access Denied, Please Login!")
+            navigate('/login')
+        }
+    }, [contextValue, navigate])
 
     return(
         <div className="admin-wrapper">
@@ -32,8 +41,8 @@ function UserPage() {
                 {surveys.map((s) => <div onClick={() => handleSurveyClick(s._id)} key={uuidv4()} className="card pointer border-dark shadow-sm p-3 me-3 mb-3">
                     <h5>{s.title}</h5>
                     </div>)}
-            </div>  
-            {currentSurvey && <FillSurvey currentSurvey={currentSurvey} />}
+            </div>
+                {currentSurvey && <FillSurvey currentSurvey={currentSurvey} setCurrentSurvey={setCurrentSurvey} />}
         </div>
     )
 }

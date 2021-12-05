@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 function AddSurvey(props) {
 
     const [questions, setQuestions] = useState([
-        {id: uuidv4(), question: ''}
+        {id: uuidv4(), question: '', answer: ''}
     ])
 
     const [title, setTitle] = useState('')
@@ -23,7 +23,7 @@ function AddSurvey(props) {
     
     const handleAdd = (e) => {
         e.preventDefault()
-        setQuestions([...questions, { id: uuidv4(), question: ''}]);
+        setQuestions([...questions, { id: uuidv4(), question: '', answer: ''}]);
     }
     const handleRemove = (e) => {
         e.preventDefault()
@@ -54,18 +54,18 @@ function AddSurvey(props) {
             props.closeFn(false)
             props.pullSurveys()
         }else {
-            alert('Something went Wrong!')
+            alert('Something went wrong!')
         }
     }
 
     return(
-        <form onSubmit={handleSubmit} className="card p-3 shadow-lg rounded">
+        <form onSubmit={handleSubmit} className="card border-dark p-3 shadow-lg rounded">
             <input value={title} onChange={(e)=>{setTitle(e.target.value)}} className="form-control border-dark form-control-lg mb-2" type="text" placeholder="Enter Title of the Survey"/>
             <div className="d-flex justify-content-around border-bottom pb-2 mb-3 border-dark">
                 <label htmlFor="datetime">Valid till</label>
                 <input value={expiry} id="datetime" onChange={(e)=>{setExpiry(e.target.value)}} className="form-control-sm border" type="datetime-local" />
             </div>
-            <div className="mb-3 border-bottom pb-2">
+            <div className="mb-3 border-bottom pb-2 overflow-auto" style={{maxHeight:"50vh"}}>
                 {questions.map((q) => 
                     <input key={q.id} value={q.question} onChange={e => handleInputChange(q.id, e)} name="question" className="form-control mb-2" type="text" placeholder="Enter Question"/>
                 )}

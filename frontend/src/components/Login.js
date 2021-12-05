@@ -1,9 +1,12 @@
-import { useState } from "react"
-// import { useNavigate } from 'react-router-dom'
+import { useContext, useState } from "react"
+import { useNavigate } from 'react-router-dom'
+import { UserContext } from "../App"
 
 function Login() {
 
-    // const navigate = useNavigate()
+    const contextValue = useContext(UserContext)
+
+    const navigate = useNavigate()
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -13,12 +16,41 @@ function Login() {
             email: email,
             password: password
         }
-        await fetch('/api/login', {
-            method: 'POST',
-            body: JSON.stringify(obj),
-            headers: {'Content-type' : 'application/json'}
-        })
-        // navigate('/admin')
+
+        try {
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                body: JSON.stringify(obj),
+                headers: {'Content-type' : 'application/json'}
+            })
+            if (response.status === 200) {
+                const data = await response.json()
+                contextValue.setLoggedIn(true)
+                contextValue.setUserId(data.userId)
+                contextValue.setUserName(data.userName)
+                contextValue.setRole(data.role)
+
+                localStorage.setItem('loggedIn', true)
+                localStorage.setItem('userId', data.userId)
+                localStorage.setItem('userName', data.userName)
+                localStorage.setItem('role', data.role)
+
+                if (data.role === "admin") {
+                    navigate('/admin')
+                } else {
+                    navigate('/user')
+            }
+            }
+            if (response.status === 401) {
+                alert('Invalid Password')
+            }else if (response.status === 400) {
+                alert('This email is not Signed Up. Please Signup')
+            }
+            
+        } catch (error) {
+            console.error(error);
+        }
+        
     }
 
     return(

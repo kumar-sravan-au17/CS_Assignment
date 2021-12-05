@@ -29,7 +29,23 @@
 }
 
 .admin-content{
+  position: fixed;
+  z-index: 1;
+  top: 40px;
   padding: 0 2em;
+}
+
+.position-fixed{
+  z-index: 1;
+  position: fixed;
+  top: 30px
+}
+
+.response-wrapper{
+  /* position: fixed; */
+  top: 50px;
+  left: 100px;
+  z-index: 1;
 }
 
 .pointer{

@@ -23,18 +23,21 @@ function Main() {
             password: password
         }
 
-        let response = await fetch('/api/signup', {
-            method: 'POST',
-            body: JSON.stringify(obj),
-            headers: {'Content-type' : 'application/json'}
-        })
-        if (response.status === 400) {
-            alert('Email Already Exists!')
-        }else if (response.status === 200) {
-            alert('Successfully Signed Up, Redirecting to Login')
-            navigate('/login')
+        try {
+            const response = await fetch('/api/signup', {
+                method: 'POST',
+                body: JSON.stringify(obj),
+                headers: {'Content-type' : 'application/json'}
+            })
+            if (response.status === 400) {
+                alert('Email Already Exists!')
+            }else if (response.status === 200) {
+                alert('Successfully Signed Up, Please Login')
+                navigate('/login')
+            }
+        } catch (error) {
+            console.error(error);
         }
-
     }
 
     return(
